@@ -1,0 +1,16 @@
+[Unit]
+Description=Start MOHH UHS Instances
+
+[Service]
+KillMode=none
+Type=oneshot
+PassEnvironment=UHS_NAME UHS_PWD UHS_ADM_PWD UHS_PORT UHS_INSTANCES
+Environment=WINEDEBUG=-all
+WorkingDirectory=/var/www/mohh-uhs
+ExecStart=/var/www/mohh-uhs/start_uhs_instances.sh
+StandardOutput=append:/var/log/mohh-uhs/mohz.log
+StandardError=append:/var/log/mohh-uhs/mohz.log
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

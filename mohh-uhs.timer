@@ -1,0 +1,10 @@
+[Unit]
+Description=Run MOHH UHS Instances periodically
+
+[Timer]
+OnBootSec=0
+OnUnitActiveSec=5min
+Unit=mohh-uhs.service
+
+[Install]
+WantedBy=timers.target
