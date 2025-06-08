@@ -3,7 +3,7 @@ Description=Run MOHH UHS Instances periodically
 
 [Timer]
 OnBootSec=0
-OnUnitActiveSec=5min
+OnUnitActiveSec=15
 Unit=mohh-uhs.service
 
 [Install]
