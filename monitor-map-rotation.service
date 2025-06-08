@@ -1,0 +1,12 @@
+[Unit]
+Description=Monitor MOHZ map rotation and update maplist.txt
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/var/www/mohh-uhs/monitor_map_rotation.sh
+Restart=always
+User=root
+
+[Install]
+WantedBy=multi-user.target

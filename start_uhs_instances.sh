@@ -25,7 +25,8 @@ start_instance() {
         -pwd:"$UHS_PWD" \
         -port:"$port" \
         -adminpwd:"$UHS_ADM_PWD" \
-        "${args[@]}" &
+        -logging \
+        "${args[@]}" > "/var/log/mohh-uhs/uhs_instance_${port}.log" 2>&1 &
 }
 
 check_instance() {
