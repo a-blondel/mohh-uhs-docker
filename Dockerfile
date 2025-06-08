@@ -8,6 +8,7 @@ RUN dpkg --add-architecture i386 && \
 
 COPY ./bin /var/www/mohh-uhs
 COPY ./start_uhs_instances.sh /var/www/mohh-uhs/start_uhs_instances.sh
+COPY ./maplist.txt /var/www/mohh-uhs/maplist.txt
 COPY ./mohh-uhs.service /etc/systemd/system/mohh-uhs.service
 COPY ./mohh-uhs.timer /etc/systemd/system/mohh-uhs.timer
 
@@ -16,5 +17,4 @@ RUN mkdir -p /var/log/mohh-uhs && \
     chmod +x /var/www/mohh-uhs/start_uhs_instances.sh && \
     systemctl enable mohh-uhs.timer
 
-VOLUME /var/www/mohh-uhs/maplist.txt
 ENTRYPOINT ["/lib/systemd/systemd"]
