@@ -67,7 +67,7 @@ while true; do
                 port=$(echo "$logfile" | grep -oE '[0-9]+')
                 echo "[DEBUG] [$port] Tail process started for $logfile"
                 tail -f "$logfile" 2>/dev/null | while read -r line; do
-                    echo "[DEBUG] [$port] Raw line: [$line]"
+                    echo "[DEBUG] [$port] Raw line: $line"
                     if [[ "$line" == *"Server cycling to map"* ]]; then
                         echo "[DEBUG] [$port] Substring match: $line"
                         mapnum=$(echo "$line" | grep -oE "Server cycling to map '?([0-9]+)'?" | grep -oE "[0-9]+")
