@@ -5,6 +5,8 @@ After=network.target
 [Service]
 Type=simple
 ExecStart=/var/www/mohh-uhs/monitor_map_rotation.sh
+StandardOutput=append:/var/log/mohh-uhs/monitor_map_rotation.log
+StandardError=append:/var/log/mohh-uhs/monitor_map_rotation.log
 Restart=always
 User=root
 

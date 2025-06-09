@@ -1,11 +1,11 @@
 #!/bin/bash
 
-if [ -z "$UHS_NAME" ] || [ -z "$UHS_PWD" ] || [ -z "$UHS_ADM_PWD" ]; then
+if [ -z "$UHS_NAME" ] || [ -z "$UHS_PWD" ] || [ -z "$UHS_ADM_PWD" ] || [ -z "$UHS_LOC" ]; then
     echo "One or more mandatory environment variables are not set"
     exit 1
 fi
 
-export UHS_PORT=${UHS_PORT:-3658}
+export UHS_PORT=${UHS_PORT:-3668}
 
 if [ ! -d "/root/.wine" ]; then
    winecfg > /dev/null 2>&1
@@ -78,8 +78,14 @@ while IFS= read -r line || [ -n "$line" ]; do
         continue
     fi
 
+
+    # Replace [LOC] with [$UHS_LOC] in the line if UHS_LOC is set (in memory only)
+    localized_line="$line"
+    if [ -n "$UHS_LOC" ]; then
+        localized_line="${localized_line//\[LOC\]/[${UHS_LOC}]}"
+    fi
     # Read the line into an array, handling quoted strings
-    eval "args=($line)"
+    eval "args=($localized_line)"
 
     if ! check_instance "$port" "${args[@]}"; then
         start_instance "$port" "${args[@]}"
