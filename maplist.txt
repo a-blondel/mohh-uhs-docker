@@ -1,2 +1,2 @@
--gname:"[TMP] TEAM MIX" -ranked -aa -ff:0 -maxPlayers:32 -mapList:211,115,216,132,336,131,352,153,245,341,222,324,124 -rounds:1 -timeLimit:10 -DMLimit:0 -INFLimit:0 -HTLLimit:0 -BLLimit:0 -skipporttest
--gname:"[TMP] DM" -ranked -aa -ff:0 -maxPlayers:32 -mapList:181,382,282,386,381,184,286,384,182,283,185,281,383,183,285 -rounds:1 -timeLimit:10 -DMLimit:0 -INFLimit:0 -HTLLimit:0 -BLLimit:0 -skipporttest
+-gname:"[LOC] TEAM MIX" -ranked -aa -ff:0 -maxPlayers:32 -mapList:352,153,245,341,222,324,124,211,115,216,132,336,131 -rounds:1 -timeLimit:10 -DMLimit:0 -INFLimit:0 -HTLLimit:0 -BLLimit:0 -skipporttest
+-gname:"[LOC] DM" -ranked -aa -ff:0 -maxPlayers:32 -mapList:384,182,283,185,281,383,183,285,181,382,282,386,381,184,286 -rounds:1 -timeLimit:10 -DMLimit:0 -INFLimit:0 -HTLLimit:0 -BLLimit:0 -skipporttest

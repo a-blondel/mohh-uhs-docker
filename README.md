@@ -11,6 +11,7 @@ When running the container, you need to specify the following environment variab
 - `UHS_PWD`: The password of the account used to run the server
 - `UHS_ADMIN_PWD`: The password to access the admin menu in the game
 - `UHS_PORT`: The base port of the server, defaults to 3658. Every instance will use a port starting from this one
+- `UHS_LOC`: The location of the server. This will affect the game names of `maplist.txt` by overriding the "[LOC]" placeholder on the fly. E.g. with UHS_LOC = US and -gname:"[LOC] TEAM MIX", it will appear as "[US] TEAM MIX".
 
 You also need to mount a volume to `/var/www/mohh-uhs/maplist.txt` which contains the list of games to be hosted on the server (an example is provided in the project).  
 

@@ -1,11 +1,11 @@
 #!/bin/bash
 
-if [ -z "$UHS_NAME" ] || [ -z "$UHS_PWD" ] || [ -z "$UHS_ADM_PWD" ]; then
+if [ -z "$UHS_NAME" ] || [ -z "$UHS_PWD" ] || [ -z "$UHS_ADM_PWD" ] || [ -z "$UHS_LOC" ]; then
     echo "One or more mandatory environment variables are not set"
     exit 1
 fi
 
-export UHS_PORT=${UHS_PORT:-3658}
+export UHS_PORT=${UHS_PORT:-3668}
 
 if [ ! -d "/root/.wine" ]; then
    winecfg > /dev/null 2>&1
@@ -25,48 +25,8 @@ start_instance() {
         -pwd:"$UHS_PWD" \
         -port:"$port" \
         -adminpwd:"$UHS_ADM_PWD" \
-        "${args[@]}" &
-}
-
-check_instance() {
-    local port="$1"
-    shift
-    local expected_args=("$@")
-
-    # Find PIDs of mohz.exe processes with the given port
-    local pids
-    pids=$(pgrep -f "mohz.exe.*-port:$port")
-
-    if [ -z "$pids" ]; then
-        return 1
-    fi
-
-    for pid in $pids; do
-        # Read the command line arguments from /proc
-        if [ -r "/proc/$pid/cmdline" ]; then
-            local cmdline
-            cmdline=$(tr '\0' ' ' < "/proc/$pid/cmdline")
-
-            # Check if all expected arguments are present
-            local mismatch=0
-            for arg in "${expected_args[@]}"; do
-                if ! echo "$cmdline" | grep -Fq -- "$arg"; then
-                    mismatch=1
-                    break
-                fi
-            done
-
-            if [ "$mismatch" -eq 0 ]; then
-                # Found a matching process
-                return 0
-            fi
-        fi
-    done
-
-    # No matching process found, kill any processes with that port
-    echo "$(date): Arguments mismatch for port $port, stopping..."
-    pkill -f -- "mohz.exe.*-port:$port"
-    return 1
+        -logging \
+        "${args[@]}" > "/var/log/mohh-uhs/uhs_instance_${port}.log" 2>&1 &
 }
 
 port="$UHS_PORT"
@@ -77,10 +37,16 @@ while IFS= read -r line || [ -n "$line" ]; do
         continue
     fi
 
+    # Replace [LOC] with [$UHS_LOC] in the line if UHS_LOC is set (in memory only)
+    localized_line="$line"
+    if [ -n "$UHS_LOC" ]; then
+        localized_line="${localized_line//\[LOC\]/[${UHS_LOC}]}"
+    fi
     # Read the line into an array, handling quoted strings
-    eval "args=($line)"
+    eval "args=($localized_line)"
 
-    if ! check_instance "$port" "${args[@]}"; then
+    # Only start instance if not already running for this port
+    if ! pgrep -f "mohz.exe.*-port:$port" > /dev/null; then
         start_instance "$port" "${args[@]}"
     fi
 

@@ -4,7 +4,7 @@ Description=Start MOHH UHS Instances
 [Service]
 KillMode=none
 Type=oneshot
-PassEnvironment=UHS_NAME UHS_PWD UHS_ADM_PWD UHS_PORT UHS_INSTANCES
+PassEnvironment=UHS_NAME UHS_PWD UHS_ADM_PWD UHS_PORT UHS_LOC
 Environment=WINEDEBUG=-all
 WorkingDirectory=/var/www/mohh-uhs
 ExecStart=/var/www/mohh-uhs/start_uhs_instances.sh
