@@ -13,9 +13,25 @@ When running the container, you need to specify the following environment variab
 - `UHS_PORT`: The base port of the server, defaults to 3658. Every instance will use a port starting from this one
 - `UHS_LOC`: The location of the server. This will affect the game names of `maplist.txt` by overriding the "[LOC]" placeholder on the fly. E.g. with UHS_LOC = US and -gname:"[LOC] TEAM MIX", it will appear as "[US] TEAM MIX".
 
-You also need to mount a volume to `/var/www/mohh-uhs/maplist.txt` which contains the list of games to be hosted on the server (an example is provided in the project).  
+The container will use the embedded `maplist.txt` file. This way, the file is updated at each map rotation, preventing to start over the rotation on game crash.  
 
-The container will periodically check for changes in the `maplist.txt` file and add/update/remove games accordingly.
+## Edit maplist
+
+To update the map rotation (or any game parameter), open a bash into the container, edit the `maplist.txt` file, then manually kill mohz.exe instances that needs to be restarted with updated parameters. The process will restart automatically with updated parameters thanks to the periodic service.  
+
+Detailed commands to achieve this :
+```
+docker exec -it mohh-uhs /bin/bash
+apt-get update
+apt-get install nano
+cd /var/www/mohh-uhs
+nano maplist.txt
+pgrep -fla "mohz.exe"
+kill {process-id}
+```
+
+Where {process-id} matches the process id (that you find using the pgrep command) of the uhs instance that needs to be restarted.  
+Don't forget that the first instance use UHS_PORT port and each additional instance (each new line of maplist.txt) increments UHS_PORT's value by one.  
 
 ## Build the image manually
 In order to do so, you need to create a `bin` folder at the root of this project and put the installation files from the UHS installer in it (which includes `mohz.exe`, ...).
